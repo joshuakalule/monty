@@ -23,7 +23,7 @@ void _div(stack_t **stack, unsigned int line_no)
 		count++;
 		if (count == 1 && node1->n == 0)
 		{
-		fprintf(stderr, "L%d: division by zero", line_no);
+		fprintf(stderr, "L%d: division by zero\n", line_no);
 		free_stack(stack);
 		exit(EXIT_FAILURE);
 		}
