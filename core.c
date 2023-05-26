@@ -23,7 +23,7 @@ void get_instruction(char *line, char *opcode, char *arg)
 		}
 		if (n == 2)
 		{
-			strcpy(arg, token);	
+			strcpy(arg, token);
 		}
 		n++;
 		token = strtok(NULL, delim);
@@ -76,7 +76,6 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 			break;
 		}
 	}
-	
 	if (strcmp(opcode, "push") == 0)
 	{
 		if (check_arg(arg) == -1)

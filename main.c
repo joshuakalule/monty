@@ -22,15 +22,13 @@ int main(int argc, char **argv)
 		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-	
 	filepath = argv[1];
-	fp = fopen(filepath, "r"); 
+	fp = fopen(filepath, "r");
 	if (fp == NULL)
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", filepath);
 		exit(EXIT_FAILURE);
 	}
-	
 	while (fgets(line, BUFSIZE, fp))
 	{
 
