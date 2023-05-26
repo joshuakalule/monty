@@ -59,6 +59,7 @@ void _add(stack_t **, unsigned int);
 void _sub(stack_t **, unsigned int);
 void _div(stack_t **, unsigned int);
 void _mul(stack_t **, unsigned int);
+void _mod(stack_t **, unsigned int);
 int check_arg(char *);
 void execute(char *, char *, int, stack_t **);
 
