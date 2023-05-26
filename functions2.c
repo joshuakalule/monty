@@ -30,9 +30,10 @@ void _swap(stack_t **stack, unsigned int line_no)
 		node1->next = node2;
 		node1->prev = NULL;
 		*stack = node1;
+		count++;
 		break;
 	}
-	if (count < 2)
+	if (count <= 2)
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", line_no);
 		free_stack(stack);
