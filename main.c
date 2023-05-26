@@ -21,14 +21,14 @@ void free_stack(stack_t **stack)
 }
 	
 
-int get_instruction(char *line, char *opcode, char *arg)
+void get_instruction(char *line, char *opcode, char *arg)
 {
 	char *token;
 	char *delim = " \t\n";
 	int n = 1;
 
 	if (!line || !opcode || !arg)
-		return (-1);
+		return;
 	token = strtok(line, delim);
 	while (token && n <= 2)
 	{
@@ -44,7 +44,6 @@ int get_instruction(char *line, char *opcode, char *arg)
 		token = strtok(NULL, delim);
 	}
 	free(token);
-	return (0);
 }
 
 void _push(stack_t **stack, unsigned int line_number)
@@ -89,19 +88,18 @@ instruction_t list[] = {
 	{NULL, NULL}
 };
 
-int check_arg(char *arg, unsigned int line_no)
+int check_arg(char *arg)
 {
 	unsigned int i;
 
+	if (!*arg)
+		return (-1);
 	for (i = 0; arg[i] != '\0'; i++)
 	{
 		if (arg[i] == '-' && i == 0)
 			continue;
 		if (isdigit(arg[i]) == 0)
-		{
-			fprintf(stderr, "L%u: push integer\n", line_no);
 			return (-1);
-		}
 	}
 	return (0);
 }
@@ -112,6 +110,9 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 	unsigned int i;
 	(void)arg;
 
+	if (!*opcode && !*arg)
+		return;
+	printf("'%s' '%s'\n", opcode, arg);
 	for (i = 0; list[i].opcode != NULL; i++)
 	{
 		if (strcmp(opcode, list[i].opcode) == 0)
@@ -122,21 +123,21 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 		}
 	}
 	
-	if (!list[i].opcode)
-	{
-		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
-		free_stack(stack);
-		exit(EXIT_FAILURE);
-	}
-	
 	if (strcmp(opcode, "push") == 0)
 	{
-		if (check_arg(arg, line_no) == -1)
+		if (check_arg(arg) == -1)
 		{
+			fprintf(stderr, "L%u: usage: push integer\n", line_no);
 			free_stack(stack);
 			exit(EXIT_FAILURE);
 		}
 		(*stack)->n = atoi(arg);
+	}
+	else if (!list[i].opcode)
+	{
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
+		free_stack(stack);
+		exit(EXIT_FAILURE);
 	}
 }
 
