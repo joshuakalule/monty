@@ -8,7 +8,7 @@ void free_stack(stack_t **stack)
 {
 	stack_t *node, *next_node;
 
-	if (!stack)
+	if (!stack || !*stack)
 		return;
 	node = *stack;
 	while (node)
@@ -17,7 +17,6 @@ void free_stack(stack_t **stack)
 		free(node);
 		node = next_node;
 	}
-	/*free(stack);*/
 }
 	
 
@@ -30,7 +29,7 @@ void get_instruction(char *line, char *opcode, char *arg)
 	if (!line || !opcode || !arg)
 		return;
 	token = strtok(line, delim);
-	while (token && n <= 2)
+	while (token)
 	{
 		if (n == 1)
 		{
@@ -38,7 +37,7 @@ void get_instruction(char *line, char *opcode, char *arg)
 		}
 		if (n == 2)
 		{
-			strcpy(arg, token);
+			strcpy(arg, token);	
 		}
 		n++;
 		token = strtok(NULL, delim);
@@ -133,7 +132,7 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 		}
 		(*stack)->n = atoi(arg);
 	}
-	else if (!list[i].opcode)
+	if (!list[i].opcode)
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
 		free_stack(stack);
@@ -160,7 +159,7 @@ int main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		fprintf(stderr, "Usage: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	
