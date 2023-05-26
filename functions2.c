@@ -10,7 +10,7 @@
  */
 void _sub(stack_t **stack, unsigned int line_no)
 {
-	stack_t *node1, node2;
+	stack_t *node1, *node2;
 	unsigned int count;
 	int sum;
 
