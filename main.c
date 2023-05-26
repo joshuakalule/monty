@@ -121,7 +121,14 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 			break;
 		}
 	}
-
+	
+	if (!list[i].opcode)
+	{
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
+		free_stack(stack);
+		exit(EXIT_FAILURE);
+	}
+	
 	if (strcmp(opcode, "push") == 0)
 	{
 		if (check_arg(arg, line_no) == -1)
@@ -130,12 +137,6 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 			exit(EXIT_FAILURE);
 		}
 		(*stack)->n = atoi(arg);
-	}
-	if (!list[i].opcode)
-	{
-		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
-		free_stack(stack);
-		exit(EXIT_FAILURE);
 	}
 }
 
