@@ -1,5 +1,11 @@
 #include "monty.h"
 
+static instruction_t ops[] = {
+	{"push", _push},
+	{"pall", _pall},
+	{NULL, NULL}
+};
+
 /**
  * get_instruction - tokenize the instructions on the line
  * @line: line from file
@@ -67,12 +73,12 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 	if (!*opcode && !*arg)
 		return;
 	/*printf("'%s' '%s'\n", opcode, arg);*/
-	for (i = 0; list[i].opcode != NULL; i++)
+	for (i = 0; ops[i].opcode != NULL; i++)
 	{
-		if (strcmp(opcode, list[i].opcode) == 0)
+		if (strcmp(opcode, ops[i].opcode) == 0)
 		{
-			if (list[i].f)
-				list[i].f(stack, line_no);
+			if (ops[i].f)
+				ops[i].f(stack, line_no);
 			break;
 		}
 	}
@@ -86,7 +92,7 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 		}
 		(*stack)->n = atoi(arg);
 	}
-	if (!list[i].opcode)
+	if (!ops[i].opcode)
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
 		free_stack(stack);

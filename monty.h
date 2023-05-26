@@ -48,16 +48,10 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-instruction_t list[] = {
-	{"push", _push},
-	{"pall", _pall},
-	{NULL, NULL}
-};
-
 void free_stack(stack_t **);
 void get_instruction(char *, char *, char *);
 void _push(stack_t **, unsigned int);
-void _pall(stack **, unsigned int);
+void _pall(stack_t **, unsigned int);
 int check_arg(char *);
 void execute(char *, char *, int, stack_t **);
 
