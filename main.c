@@ -112,7 +112,7 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 
 	if (!*opcode && !*arg)
 		return;
-	printf("'%s' '%s'\n", opcode, arg);
+	/*printf("'%s' '%s'\n", opcode, arg);*/
 	for (i = 0; list[i].opcode != NULL; i++)
 	{
 		if (strcmp(opcode, list[i].opcode) == 0)
