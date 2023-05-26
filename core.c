@@ -3,6 +3,7 @@
 static instruction_t ops[] = {
 	{"push", _push},
 	{"pall", _pall},
+	{"pint", _pint},
 	{NULL, NULL}
 };
 
@@ -27,9 +28,13 @@ void get_instruction(char *line, char *opcode, char *arg)
 		{
 			strcpy(opcode, token);
 		}
-		if (n == 2)
+		else if (n == 2)
 		{
 			strcpy(arg, token);
+		}
+		else
+		{
+			break;
 		}
 		n++;
 		token = strtok(NULL, delim);

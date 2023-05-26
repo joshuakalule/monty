@@ -20,6 +20,24 @@ void free_stack(stack_t **stack)
 }
 
 /**
+ * _pint - prints the value at the top of the stack
+ * @stack: pointer to pointer to stack
+ * @line_number: line number
+ */
+void _pint(stack_t **stack, unsigned int line_number)
+{
+	if (!stack)
+		return;
+	if (!*stack)
+	{
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
+		free_stack(stack);
+		exit(EXIT_FAILURE);
+	}
+	fprintf(stdout, "%d\n", (*stack)->n);
+}
+
+/**
  * _push - push an element onto the stack
  * @stack: stack
  * @line_number: line number
