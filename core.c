@@ -85,6 +85,8 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 
 	if (!*opcode && !*arg)
 		return;
+	if (opcode[0] == '#')
+		return;
 	/*printf("'%s' '%s'\n", opcode, arg);*/
 	for (i = 0; ops[i].opcode != NULL; i++)
 	{

@@ -31,7 +31,6 @@ int main(int argc, char **argv)
 	}
 	while (fgets(line, BUFSIZE, fp))
 	{
-
 		/*printf("[%i]: %s", line_no, line);*/
 		get_instruction(line, opcode, arg);
 		/*printf("opcode: %s arg: %s\n", opcode, arg);*/
