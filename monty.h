@@ -63,6 +63,7 @@ void _mod(stack_t **, unsigned int);
 void _pchar(stack_t **, unsigned int);
 void _pstr(stack_t **, unsigned int);
 void _rotl(stack_t **, unsigned int);
+void _rotr(stack_t **, unsigned int);
 int check_arg(char *);
 void execute(char *, char *, int, stack_t **);
 int execute_2(char *, char *, int, stack_t **);
