@@ -57,9 +57,9 @@ int main(int argc, char **argv)
 	efp = fp;
 	while (fgets(line, BUFSIZE, fp))
 	{
-		printf("[%i]: %s", line_no, line);
+		/*printf("[%i]: %s", line_no, line);*/
 		get_instruction(line, opcode, arg);
-		printf("opcode: %s arg: %s\n", opcode, arg);
+		/*printf("opcode: %s arg: %s\n", opcode, arg);*/
 		execute(opcode, arg, line_no, &stack);
 		line_no++;
 		memset(opcode, '\0', sizeof(opcode));
