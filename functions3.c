@@ -1,6 +1,40 @@
 #include "monty.h"
 
 /**
+ * _pstr - prints the strings in the stack
+ * @stack: pointer to pointer to the stack
+ * @line_no: line number
+ *
+ * Description: prints the string starting at the top of the stack
+ * followed by a new line
+ */
+void _pstr(stack_t **stack, unsigned int line_no)
+{
+	stack_t *node;
+	int n;
+	(void) line_no;
+
+	if (!stack)
+	{
+		fprintf(stdout, "\n");
+		return;
+	}
+	node = *stack;
+	while (node)
+	{
+		n = node->n;
+		if (n == 0)
+			break;
+		if (n < 32 || n > 126)
+			return;
+		fprintf(stdout, "%c", n);
+		fflush(stdout);
+		node = node->next;
+	}
+	fprintf(stdout, "\n");
+}
+
+/**
  * _mod - performs a modulo operation
  * @stack: pointer to pointer to the stack
  * @line_no: line number
