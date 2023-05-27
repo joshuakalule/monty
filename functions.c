@@ -1,25 +1,6 @@
 #include "monty.h"
 
 /**
- * free_stack - frees the stack
- * @stack: pointer to pointer to stack
- */
-void free_stack(stack_t **stack)
-{
-	stack_t *node, *next_node;
-
-	if (!stack || !*stack)
-		return;
-	node = *stack;
-	while (node)
-	{
-		next_node = node->next;
-		free(node);
-		node = next_node;
-	}
-}
-
-/**
  * _pint - prints the value at the top of the stack
  * @stack: pointer to pointer to stack
  * @line_number: line number

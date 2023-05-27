@@ -1,5 +1,29 @@
 #include "monty.h"
 
+FILE *efp = NULL;
+
+/**
+ * free_stack - frees the stack
+ * @stack: pointer to pointer to stack
+ */
+void free_stack(stack_t **stack)
+{
+	stack_t *node, *next_node;
+
+	if (!stack || !*stack)
+		return;
+	node = *stack;
+	while (node)
+	{
+		next_node = node->next;
+		free(node);
+		node = next_node;
+	}
+	/* close the open file */
+	if (efp)
+		fclose(efp);
+}
+
 /**
  * main - entry point
  * @argc:  number of arguments passed
@@ -29,11 +53,13 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error: Can't open file %s\n", filepath);
 		exit(EXIT_FAILURE);
 	}
+	/* set external variable */
+	efp = fp;
 	while (fgets(line, BUFSIZE, fp))
 	{
-		/*printf("[%i]: %s", line_no, line);*/
+		printf("[%i]: %s", line_no, line);
 		get_instruction(line, opcode, arg);
-		/*printf("opcode: %s arg: %s\n", opcode, arg);*/
+		printf("opcode: %s arg: %s\n", opcode, arg);
 		execute(opcode, arg, line_no, &stack);
 		line_no++;
 		memset(opcode, '\0', sizeof(opcode));
@@ -41,6 +67,7 @@ int main(int argc, char **argv)
 	}
 
 	fclose(fp);
+	efp = NULL;
 	free_stack(&stack);
 	return (0);
 }

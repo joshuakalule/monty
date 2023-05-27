@@ -47,7 +47,6 @@ void get_instruction(char *line, char *opcode, char *arg)
 		n++;
 		token = strtok(NULL, delim);
 	}
-	free(token);
 }
 
 /**
