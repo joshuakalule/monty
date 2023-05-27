@@ -12,6 +12,7 @@ static instruction_t ops[] = {
 	{"div", _div},
 	{"mul", _mul},
 	{"mod", _mod},
+	{"pchar", _pchar},
 	{NULL, NULL}
 };
 
@@ -79,7 +80,7 @@ int check_arg(char *arg)
  */
 void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 {
-	unsigned int i;
+	unsigned int i, error = 0;
 	(void)arg;
 
 	if (!*opcode && !*arg)
@@ -96,20 +97,53 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 			break;
 		}
 	}
+	if (!ops[i].opcode)
+	{
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
+		error = 1;
+	}
+	else if (execute_2(opcode, arg, line_no, stack) == -1)
+	{
+		error = 1;
+	}
+
+	if (error == 1)
+	{
+		free_stack(stack);
+		exit(EXIT_FAILURE);
+	}
+}
+/**
+ * execute_2 - helper for execute
+ * @opcode: opcode
+ * @arg: argument
+ * @line_no: line number
+ * @stack: pointer to pointer to the stack
+ *
+ * Return: 0 (Success) | -1 (Failure)
+ */
+int execute_2(char *opcode, char *arg, int line_no, stack_t **stack)
+{
+	int top;
+
 	if (strcmp(opcode, "push") == 0)
 	{
 		if (check_arg(arg) == -1)
 		{
-			fprintf(stderr, "L%u: usage: push integer\n", line_no);
-			free_stack(stack);
-			exit(EXIT_FAILURE);
+		fprintf(stderr, "L%u: usage: push integer\n", line_no);
+		return (-1);
 		}
 		(*stack)->n = atoi(arg);
 	}
-	if (!ops[i].opcode)
+	else if (strcmp(opcode, "pchar") == 0)
 	{
-		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
-		free_stack(stack);
-		exit(EXIT_FAILURE);
+		top = (*stack)->n;
+		if (top < 32 || top > 126)
+		{
+		fprintf(stderr, "L%u: can't pchar, value out of range\n", line_no);
+		return (-1);
+		}
+		fprintf(stdout, "%c\n", top);
 	}
+	return (0);
 }
