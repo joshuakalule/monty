@@ -94,16 +94,16 @@ void execute(char *code, char *arg, int line_no, stack_t **stack, char *mode)
 	if (code[0] == '#')
 		return;
 	/*printf("'%s' '%s'\n", code, arg);*/
-	for (i = 0; ops[i].code != NULL; i++)
+	for (i = 0; ops[i].opcode != NULL; i++)
 	{
-		if (strcmp(code, ops[i].code) == 0)
+		if (strcmp(code, ops[i].opcode) == 0)
 		{
 			if (ops[i].f)
 				ops[i].f(stack, line_no);
 			break;
 		}
 	}
-	if (!ops[i].code)
+	if (!ops[i].opcode)
 	{
 		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, code);
 		error = 1;
