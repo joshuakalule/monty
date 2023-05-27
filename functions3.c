@@ -26,7 +26,7 @@ void _pstr(stack_t **stack, unsigned int line_no)
 		if (n == 0)
 			break;
 		if (n < 32 || n > 126)
-			return;
+			break;
 		fprintf(stdout, "%c", n);
 		fflush(stdout);
 		node = node->next;
