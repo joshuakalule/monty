@@ -65,7 +65,7 @@ void _pstr(stack_t **, unsigned int);
 void _rotl(stack_t **, unsigned int);
 void _rotr(stack_t **, unsigned int);
 int check_arg(char *);
-void execute(char *, char *, int, stack_t **);
-int execute_2(char *, char *, int, stack_t **);
+void execute(char *, char *, int, stack_t **, char *);
+int execute_2(char *, char *, int, stack_t **, char *);
 
 #endif /*_MONTY_H_*/

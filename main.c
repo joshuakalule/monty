@@ -40,6 +40,7 @@ int main(int argc, char **argv)
 	stack_t *stack = NULL;
 	char opcode[OPCODE_SIZE] = {'\0'};
 	char arg[ARG_SIZE] = {'\0'};
+	char mode = 's'; /* s - stack (default), q - queue */
 
 	if (argc != 2)
 	{
@@ -60,7 +61,7 @@ int main(int argc, char **argv)
 		/*printf("[%i]: %s", line_no, line);*/
 		get_instruction(line, opcode, arg);
 		/*printf("opcode: %s arg: %s\n", opcode, arg);*/
-		execute(opcode, arg, line_no, &stack);
+		execute(opcode, arg, line_no, &stack, &mode);
 		line_no++;
 		memset(opcode, '\0', sizeof(opcode));
 		memset(arg, '\0', sizeof(arg));

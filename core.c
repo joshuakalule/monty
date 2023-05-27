@@ -16,29 +16,31 @@ static instruction_t ops[] = {
 	{"pstr", _pstr},
 	{"rotl", _rotl},
 	{"rotr", _rotr},
+	{"stack", NULL},
+	{"queue", NULL},
 	{NULL, NULL}
 };
 
 /**
  * get_instruction - tokenize the instructions on the line
  * @line: line from file
- * @opcode: pointer to opcode
+ * @code: pointer to code
  * @arg: pointer to arg
  */
-void get_instruction(char *line, char *opcode, char *arg)
+void get_instruction(char *line, char *code, char *arg)
 {
 	char *token;
 	char *delim = " \t\n";
 	int n = 1;
 
-	if (!line || !opcode || !arg)
+	if (!line || !code || !arg)
 		return;
 	token = strtok(line, delim);
 	while (token)
 	{
 		if (n == 1)
 		{
-			strcpy(opcode, token);
+			strcpy(code, token);
 		}
 		else if (n == 2)
 		{
@@ -76,36 +78,37 @@ int check_arg(char *arg)
 
 /**
  * execute - execute the instructions
- * @opcode: opcode
+ * @code: code
  * @arg: arg
  * @line_no: line number
  * @stack: pointer to pointer to the stack
+ * @mode: mode of operations
  */
-void execute(char *opcode, char *arg, int line_no, stack_t **stack)
+void execute(char *code, char *arg, int line_no, stack_t **stack, char *mode)
 {
 	unsigned int i, error = 0;
 	(void)arg;
 
-	if (!*opcode && !*arg)
+	if (!*code && !*arg)
 		return;
-	if (opcode[0] == '#')
+	if (code[0] == '#')
 		return;
-	/*printf("'%s' '%s'\n", opcode, arg);*/
-	for (i = 0; ops[i].opcode != NULL; i++)
+	/*printf("'%s' '%s'\n", code, arg);*/
+	for (i = 0; ops[i].code != NULL; i++)
 	{
-		if (strcmp(opcode, ops[i].opcode) == 0)
+		if (strcmp(code, ops[i].code) == 0)
 		{
 			if (ops[i].f)
 				ops[i].f(stack, line_no);
 			break;
 		}
 	}
-	if (!ops[i].opcode)
+	if (!ops[i].code)
 	{
-		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, opcode);
+		fprintf(stderr, "L%u: unknown instruction %s\n", line_no, code);
 		error = 1;
 	}
-	else if (execute_2(opcode, arg, line_no, stack) == -1)
+	else if (execute_2(code, arg, line_no, stack, mode) == -1)
 	{
 		error = 1;
 	}
@@ -118,18 +121,19 @@ void execute(char *opcode, char *arg, int line_no, stack_t **stack)
 }
 /**
  * execute_2 - helper for execute
- * @opcode: opcode
+ * @code: code
  * @arg: argument
  * @line_no: line number
  * @stack: pointer to pointer to the stack
+ * @mode: mode of operations
  *
  * Return: 0 (Success) | -1 (Failure)
  */
-int execute_2(char *opcode, char *arg, int line_no, stack_t **stack)
+int execute_2(char *code, char *arg, int line_no, stack_t **stack, char *mode)
 {
 	int top;
 
-	if (strcmp(opcode, "push") == 0)
+	if (strcmp(code, "push") == 0)
 	{
 		if (check_arg(arg) == -1)
 		{
@@ -137,8 +141,10 @@ int execute_2(char *opcode, char *arg, int line_no, stack_t **stack)
 		return (-1);
 		}
 		(*stack)->n = atoi(arg);
+		if (*mode == 'q')
+			_rotl(stack, line_no);
 	}
-	else if (strcmp(opcode, "pchar") == 0)
+	else if (strcmp(code, "pchar") == 0)
 	{
 		top = (*stack)->n;
 		if (top < 32 || top > 126)
@@ -147,6 +153,16 @@ int execute_2(char *opcode, char *arg, int line_no, stack_t **stack)
 		return (-1);
 		}
 		fprintf(stdout, "%c\n", top);
+	}
+	else if (strcmp(code, "stack") == 0)
+	{
+		if (*mode != 's')
+			*mode = 's';
+	}
+	else if (strcmp(code, "queue") == 0)
+	{
+		if (*mode != 'q')
+			*mode = 'q';
 	}
 	return (0);
 }
